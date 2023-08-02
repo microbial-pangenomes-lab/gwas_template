@@ -927,12 +927,13 @@ rule run_enrich_wg:
 
 rule manhattan:
   input:
-    expand('out/associations/{target}/summary.tsv',
+    expand('out/associations/{target}/mapped_all.tsv',
            target=config["targets"])
 
 rule plot_manhattan:
   input:
-    patterns="out/associations/{target}/unitigs_patterns.txt"
+    patterns="out/associations/{target}/unitigs_patterns.txt",
+    mapped="out/associations/{target}/mapped_all.tsv"
   output:
     outdir="out/associations/{target}"
   conda: "envs/pyseer.yaml"
@@ -940,7 +941,7 @@ rule plot_manhattan:
   shell:
     """
     pval=$(python workflow/scripts/count_patterns.py --threshold out/associations/{wildcards.target}/unitigs_patterns.txt)
-    python3 workflow/scripts/plot_manhattan.py {input.patterns} pval {output.outdir}
+    python3 workflow/scripts/plot_manhattan.py {input.mapped} $pval {output.outdir}
     """
 
 rule panfeed_kmers:
