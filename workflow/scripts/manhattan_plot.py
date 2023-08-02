@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 
 import os
@@ -13,6 +13,8 @@ def get_options():
 
     parser.add_argument('mapped',
                         help='Output file from mapping back the associations')
+    parser.add_argument('threshold',
+                        help='Threshold, computed in the rule')
     parser.add_argument('output',
                         help='Output directory')
     parser.add_argument('--format',
@@ -51,7 +53,7 @@ if __name__ == "__main__":
         name = y
         x = m[m['strain'] == y]
         # needs code to compute threshold 
-        threshold = 3.11E-08
+        threshold = options.threshold
         # plot
         print(f'Generating plot for {name}')
         plt.figure(figsize=(10, 6))

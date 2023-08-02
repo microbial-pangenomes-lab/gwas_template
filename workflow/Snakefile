@@ -925,6 +925,24 @@ rule run_enrich_wg:
             {input.reference} {input.obo} {output} 2> {log}
     """
 
+rule manhattan:
+  input:
+    expand('out/associations/{target}/summary.tsv',
+           target=config["targets"])
+
+rule plot_manhattan:
+  input:
+    patterns="out/associations/{target}/unitigs_patterns.txt"
+  output:
+    outdir="out/associations/{target}"
+  conda: "envs/pyseer.yaml"
+  log: "out/logs/manhattan.log"
+  shell:
+    """
+    pval=$(python workflow/scripts/count_patterns.py --threshold out/associations/{wildcards.target}/unitigs_patterns.txt)
+    python3 workflow/scripts/plot_manhattan.py {input.patterns} pval {output.outdir}
+    """
+
 rule panfeed_kmers:
   input:
     pangenome=config["pangenome"],
