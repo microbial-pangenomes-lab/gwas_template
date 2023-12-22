@@ -10,3 +10,4 @@ dependencies:
  - perl-bioperl=1.7.8
  - bcftools>1.10
  - gsl
+ - tabixpp=1.1.0
